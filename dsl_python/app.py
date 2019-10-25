@@ -3,6 +3,8 @@ import operator
 
 from flask import Flask, jsonify, request
 
+from .dsl import CalcLexer, CalcParser
+
 app = Flask(__name__)
 
 
@@ -59,3 +61,16 @@ def math():
     operation = json.loads(request.args.get('operation'))
 
     return jsonify(result=process_operation(operation))
+
+
+@app.route('/math2')
+def math2():
+    operation = request.args.get('operation')
+
+    lexer = CalcLexer()
+    parser = CalcParser()
+
+    tokens = lexer.tokenize(operation)
+    print(tokens)
+
+    return jsonify(result=parser.parse(tokens))

@@ -9,6 +9,7 @@ python = "^3.7"
 RISE = "^5.5"
 jupyter = "^1.0"
 flask = "^1.1"
+sly = "^0.3.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^3.0"
