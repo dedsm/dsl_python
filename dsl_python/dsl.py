@@ -5,7 +5,7 @@ from werkzeug import exceptions
 class CalcLexer(Lexer):
     tokens = {NUMBER}
     ignore = ' \t\n'
-    literals = {'+'}
+    literals = {'+', '-', '/', '*', '(', ')'}
 
     @_(r'\d+(\.\d+)?')
     def NUMBER(self, t):
@@ -20,7 +20,8 @@ class CalcParser(Parser):
     tokens = CalcLexer.tokens
 
     precedence = (
-        ('left', '+'),
+        ('left', '+', '-'),
+        ('left', '*', '/'),
     )
 
     def error(self, p):
@@ -37,6 +38,22 @@ class CalcParser(Parser):
     def operation(self, p):
         return p.NUMBER
 
+    @_('"(" operation ")"')
+    def operation(self, p):
+        return p.operation
+
     @_('operation "+" operation')
     def operation(self, p):
         return p.operation0 + p.operation1
+
+    @_('operation "*" operation')
+    def operation(self, p):
+        return p.operation0 * p.operation1
+
+    @_('operation "/" operation')
+    def operation(self, p):
+        return p.operation0 / p.operation1
+
+    @_('operation "-" operation')
+    def operation(self, p):
+        return p.operation0 - p.operation1
