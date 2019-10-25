@@ -71,6 +71,5 @@ def math2():
     parser = CalcParser()
 
     tokens = lexer.tokenize(operation)
-    print(tokens)
 
     return jsonify(result=parser.parse(tokens))

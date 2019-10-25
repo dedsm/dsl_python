@@ -33,6 +33,6 @@ class CalcParser(Parser):
     def operation(self, p):
         return p.NUMBER
 
-    @_('NUMBER "+" NUMBER')
+    @_('operation "+" operation')
     def operation(self, p):
-        return p.NUMBER0 + p.NUMBER1
+        return p.operation0 + p.operation1
