@@ -1,15 +1,37 @@
+import operator
+
 from sly import Lexer, Parser
 from werkzeug import exceptions
 
 
 class CalcLexer(Lexer):
-    tokens = {NUMBER}
+    tokens = {NUMBER, PLUS, MINUS, DIVIDE, TIMES}
     ignore = ' \t\n'
-    literals = {'+', '-', '/', '*', '(', ')'}
+    literals = {'(', ')'}
 
     @_(r'\d+(\.\d+)?')
     def NUMBER(self, t):
         t.value = float(t.value)
+        return t
+
+    @_(r'\+')
+    def PLUS(self, t):
+        t.value = operator.add
+        return t
+
+    @_(r'-')
+    def MINUS(self, t):
+        t.value = operator.sub
+        return t
+
+    @_(r'/')
+    def DIVIDE(self, t):
+        t.value = operator.truediv
+        return t
+
+    @_(r'\*')
+    def TIMES(self, t):
+        t.value = operator.mul
         return t
 
     def error(self, t):
@@ -20,8 +42,8 @@ class CalcParser(Parser):
     tokens = CalcLexer.tokens
 
     precedence = (
-        ('left', '+', '-'),
-        ('left', '*', '/'),
+        ('left', PLUS, MINUS),
+        ('left', DIVIDE, TIMES),
     )
 
     def error(self, p):
@@ -42,18 +64,11 @@ class CalcParser(Parser):
     def operation(self, p):
         return p.operation
 
-    @_('operation "+" operation')
+    @_(
+        'operation PLUS operation',
+        'operation MINUS operation',
+        'operation TIMES operation',
+        'operation DIVIDE operation',
+    )
     def operation(self, p):
-        return p.operation0 + p.operation1
-
-    @_('operation "*" operation')
-    def operation(self, p):
-        return p.operation0 * p.operation1
-
-    @_('operation "/" operation')
-    def operation(self, p):
-        return p.operation0 / p.operation1
-
-    @_('operation "-" operation')
-    def operation(self, p):
-        return p.operation0 - p.operation1
+        return p[1](p.operation0, p.operation1)
