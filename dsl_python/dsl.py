@@ -19,6 +19,10 @@ class CalcLexer(Lexer):
 class CalcParser(Parser):
     tokens = CalcLexer.tokens
 
+    precedence = (
+        ('left', '+'),
+    )
+
     def error(self, p):
         if p is None:
             raise exceptions.BadRequest("Syntax error, unexpected EOF")
