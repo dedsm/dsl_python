@@ -8,6 +8,7 @@ authors = ["David de Sousa <davidesousa@gmail.com>"]
 python = "^3.7"
 RISE = "^5.5"
 jupyter = "^1.0"
+flask = "^1.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^3.0"
