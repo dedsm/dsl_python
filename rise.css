@@ -1,0 +1,5 @@
+.reveal pre code {
+    line-height: 1.2em;
+    font-size: 1vmax;
+    max-height: 100%;
+}

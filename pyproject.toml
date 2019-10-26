@@ -10,6 +10,8 @@ RISE = "^5.5"
 jupyter = "^1.0"
 flask = "^1.1"
 sly = "^0.3.0"
+jupyter_contrib_nbextensions = "^0.5.1"
+requests = "^2.22"
 
 [tool.poetry.dev-dependencies]
 pytest = "^3.0"
