@@ -1,5 +1,11 @@
 .reveal pre code {
     line-height: 1.2em;
-    font-size: 1vmax;
-    max-height: 100%;
+    font-size: 1.5vh;
+    max-height: 650px;
+}
+
+.conflict-image {
+    width: 50%;
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
